@@ -1,0 +1,103 @@
+{% extends "dashboard_base.html" %}
+
+{% block head %}
+<title>Manager Dashboard</title>
+{% endblock %}
+
+
+{% block h1 %}
+<h1>Manager Dashboard</h1>
+{% endblock %}
+
+
+{% block body %}
+<main>
+
+
+
+<h2>Manage Reimbursement Requests</h2>
+{% if claims | length == 0 %}
+    <p>No Reimbursement Requests alloted to you!</p>
+{% else %}
+    <table>
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Amount</th>
+                <th>Expense Type</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Proof</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for claim, employee in claims %}
+            <tr>
+                <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+                <td>{{ claim.amount }}</td>
+                <td>{{ claim.expense_type }}</td> 
+                <td>{{ claim.status }}</td>
+                <td>{{ claim.created }}</td>
+                <td>
+                    {% if claim.proof %}
+                        <a href="{{ url_for('static', filename='uploads/' ~ claim.proof) }}" target="_blank">View</a>
+                    {% else %}
+                        No Proof
+                    {% endif %}
+                </td>
+                <td>
+                    <form method="POST" action="{{ url_for('approve_reject_claim', user_id=manager_id, req_id=claim.req_id) }}">
+                        <button type="submit" name="action" value="approve_claim">Approve</button>
+                        <button type="submit" name="action" value="reject_claim">Reject</button>
+                        <br>
+                        <br>
+                        <input type="text" name="comments" placeholder="Comments">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+<br>
+<h2>My Reimbursement Requests</h2>
+{% if my_claims | length == 0 %}
+    <p>No Reimbursement Requests submitted!</p>
+{% else %}
+    <table>
+        <thead>
+            <tr>
+                <th>Expense Type</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Proof</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for claim in my_claims %}
+            <tr>
+                <td>{{ claim.expense_type }}</td> 
+                <td>{{ claim.amount }}</td>
+                <td>{{ claim.status }}</td>
+                <td>{{ claim.created }}</td>
+                <td>
+                    {% if claim.proof %}
+                        <a href="{{ url_for('static', filename='uploads/' ~ claim.proof) }}" target="_blank">View Proof</a>
+                    {% else %}
+                        No Proof
+                    {% endif %}
+                </td>
+                <td>{{ claim.comments }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+<br>
+<a href="{{ url_for('submit_reimbursement', user_id=manager_id) }}" class="btn">Submit a Reimbursement Claim</a>
+</main>
+
+{% endblock %}

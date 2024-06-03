@@ -1,0 +1,63 @@
+2024-06-03 10:44:21,267 - logging_config - INFO - Redirecting to login page
+2024-06-03 10:44:35,095 - logging_config - INFO - User john.doe@nucleusteq.com logged in successfully
+2024-06-03 10:44:35,095 - logging_config - INFO - Opening dashboard for user: john.doe@nucleusteq.com, Role: ADMIN
+2024-06-03 10:45:10,029 - logging_config - INFO - User None logging out
+2024-06-03 10:45:27,063 - logging_config - INFO - User alice.johnson@nucleusteq.com logged in successfully
+2024-06-03 10:45:27,063 - logging_config - INFO - Opening dashboard for user: alice.johnson@nucleusteq.com, Role: MANAGER
+2024-06-03 11:38:16,743 - logging_config - INFO - Reimbursement Database initialized
+2024-06-03 11:38:23,598 - logging_config - INFO - Reimbursement Database initialized
+2024-06-03 11:38:23,876 - logging_config - INFO - Redirecting to login page
+2024-06-03 11:38:23,891 - logging_config - INFO - Login page rendered
+2024-06-03 11:39:59,421 - logging_config - INFO - User john.doe@nucleusteq.com logged in successfully
+2024-06-03 11:39:59,421 - logging_config - INFO - Opening dashboard for user: john.doe@nucleusteq.com, Role: ADMIN
+2024-06-03 11:39:59,515 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 11:40:11,685 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 11:40:18,762 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 11:40:26,166 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 11:40:38,174 - logging_config - INFO - Department HR added successfully
+2024-06-03 11:40:38,202 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 11:40:41,559 - logging_config - INFO - User john.doe@nucleusteq.com logged out
+2024-06-03 11:40:41,581 - logging_config - INFO - Login page rendered
+2024-06-03 11:40:44,219 - logging_config - INFO - Register page rendered
+2024-06-03 11:40:57,938 - logging_config - INFO - Login page rendered
+2024-06-03 11:41:29,618 - logging_config - WARNING - Invalid login attempt for email: alice.johnson@nucleusteq.com
+2024-06-03 11:41:29,618 - logging_config - INFO - Login page rendered
+2024-06-03 11:41:38,228 - logging_config - WARNING - Invalid login attempt for email: alice.johnson@nucleusteq.com
+2024-06-03 11:41:38,228 - logging_config - INFO - Login page rendered
+2024-06-03 11:41:59,131 - logging_config - INFO - User alice.johnson@nucleusteq.com logged in successfully
+2024-06-03 11:41:59,136 - logging_config - INFO - Opening dashboard for user: alice.johnson@nucleusteq.com, Role: MANAGER
+2024-06-03 11:41:59,169 - logging_config - INFO - Fetched claims for manager ID 4
+2024-06-03 11:41:59,198 - logging_config - INFO - Manager dashboard rendered for manager ID 4
+2024-06-03 11:42:28,228 - logging_config - INFO - Request ID 1 approved by Admin ID 4
+2024-06-03 11:42:28,300 - logging_config - INFO - Fetched claims for manager ID 4
+2024-06-03 11:42:28,315 - logging_config - INFO - Manager dashboard rendered for manager ID 4
+2024-06-03 11:43:47,227 - logging_config - INFO - User alice.johnson@nucleusteq.com logged out
+2024-06-03 11:43:47,290 - logging_config - INFO - Login page rendered
+2024-06-03 11:44:24,881 - logging_config - INFO - User eve.brown@nucleusteq.com logged in successfully
+2024-06-03 11:44:24,884 - logging_config - INFO - Opening dashboard for user: eve.brown@nucleusteq.com, Role: USER
+2024-06-03 11:44:24,939 - logging_config - INFO - Employee dashboard rendered for employee ID 8
+2024-06-03 11:44:36,091 - logging_config - INFO - User eve.brown@nucleusteq.com logged out
+2024-06-03 11:44:36,100 - logging_config - INFO - Login page rendered
+2024-06-03 11:44:55,419 - logging_config - INFO - User john.doe@nucleusteq.com logged in successfully
+2024-06-03 11:44:55,424 - logging_config - INFO - Opening dashboard for user: john.doe@nucleusteq.com, Role: ADMIN
+2024-06-03 11:44:55,448 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 11:45:04,718 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 11:45:11,320 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 11:45:29,469 - logging_config - INFO - Request ID 3 rejected by Admin ID 1
+2024-06-03 11:45:29,535 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 11:45:35,977 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 11:45:37,656 - logging_config - INFO - Department ID 4 deleted successfully
+2024-06-03 11:45:37,689 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 11:45:42,941 - logging_config - INFO - User john.doe@nucleusteq.com logged out
+2024-06-03 11:45:42,957 - logging_config - INFO - Login page rendered
+2024-06-03 16:06:20,992 - logging_config - INFO - Reimbursement Database initialized
+2024-06-03 16:06:23,682 - logging_config - INFO - Reimbursement Database initialized
+2024-06-03 16:06:27,186 - logging_config - INFO - Redirecting to login page
+2024-06-03 16:06:27,207 - logging_config - INFO - Login page rendered
+2024-06-03 16:06:42,488 - logging_config - INFO - User john.doe@nucleusteq.com logged in successfully
+2024-06-03 16:06:42,488 - logging_config - INFO - Opening dashboard for user: john.doe@nucleusteq.com, Role: ADMIN
+2024-06-03 16:06:42,639 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 16:06:51,195 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 16:06:56,192 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 16:08:48,178 - logging_config - INFO - Admin dashboard rendered for Admin ID 1
+2024-06-03 16:12:31,510 - logging_config - INFO - Reimbursement Database initialized

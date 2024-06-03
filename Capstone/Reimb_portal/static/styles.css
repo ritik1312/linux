@@ -1,0 +1,252 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("/static/images/wallpaper.jpg") no-repeat center center; 
+  background-size: cover;
+  filter: blur(10px);
+  z-index: -1;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px;
+  background-color: rgb(7, 4, 17);
+  position: relative;
+}
+
+.company-logo {
+  display: flex;
+  align-items: center;
+}
+
+.company-logo img {
+  width: 120px; 
+  height: 40px;
+}
+
+.logout-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.logout-container img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px; 
+}
+
+.logout-container p {
+  margin: 0 10px 0 0;
+  font-size: 16px;
+  color: white; 
+}
+
+.logout-container a {
+  text-decoration: none;
+  color: white; 
+  font-size: 14px;
+  background-color: #db1e2d;
+}
+
+.logout-container a:hover {
+  text-decoration: underline;
+  background-color: #dc3d15;
+}
+
+main {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 1rem;
+  position: relative;
+  background: #f4f4f9;
+  box-shadow: 0 2px 4px rgba(255, 255, 266, 0.75);
+  border-radius: 4px;
+}
+
+a {
+  display: inline-block;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+a:hover {
+    background-color: #0056b3;
+}
+
+h1 {
+  text-align: center;
+  color: whitesmoke;
+}
+
+h2 {
+  color: #333;
+}
+
+/* flash messages style */
+
+.flash-messages {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: auto;
+  max-width: 300px;
+  z-index: 1000;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.flash-message {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.flash-message.success {
+  color: green;
+  border-left: 4px solid green;
+}
+
+.flash-message.error {
+  color: red;
+  border-left: 4px solid red;
+}
+
+/* Form Styles */
+form {
+  margin-bottom: 2rem;
+}
+
+form div {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+input[type="text"], select {
+  width: calc(100% - 2rem);
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+button[type="submit"] {
+  margin-top: 1rem;
+  background-color: #1e90ff;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #1c7ed6;
+}
+
+button[type="submit"][formnovalidate], button[value="delete_employee"], button[value="reject_claim"] {
+  background-color: #ff4757;
+}
+
+button[type="submit"][formnovalidate]:hover, button[value="delete_employee"]:hover , button[value="reject_claim"]:hover{
+  background-color: #dc3d15;
+}
+
+button[value="approve_claim"]{
+  background-color: rgb(24, 162, 24);
+}
+
+button[value="approve_claim"]:hover{
+  background-color: rgb(18, 105, 18);
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+table thead {
+  background-color: #007bff;
+  color: #fff;
+}
+
+table th, table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  font-weight: bold;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  main {
+      padding: 1rem;
+  }
+
+  table th, table td {
+      padding: 0.5rem;
+  }
+
+  button[type="submit"], input[type="text"], select {
+      width: 100%;
+      margin-bottom: 0.5rem;
+  }
+
+  input[type="text"][name="comments"] {
+      width: calc(100% - 1rem);
+      margin-left: 0;
+      margin-top: 0.5rem;
+  }
+
+}

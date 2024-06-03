@@ -1,0 +1,158 @@
+{% extends "dashboard_base.html" %}
+
+{% block head %}
+<title>Admin Dashboard</title>
+{% endblock %}
+
+{% block h1 %}
+<h1>Admin Dashboard</h1>
+{% endblock %}
+
+{% block body %}
+
+<main>
+<h2>Manage Departments</h2>
+<form method="POST" action="{{ url_for('admin_dashboard', admin_id=admin_id) }}">
+    <div>
+        <label for="name">New Department Name:</label>
+        <input type="text" id="new_department_name" name="new_department_name" required>
+        <button type="submit" name="action" value="add_department">Add Department</button>
+    </div>
+    <div>
+        <label for="department">Select Department:</label>
+        <select id="department" name="selected_department_id" onchange="this.form.submit()">
+        <option value="">Select Department</option>
+        {% for department in departments %}
+        <option value="{{ department.dept_id }}" {% if department.dept_id == selected_department_id %} selected {% endif %}>
+            {{ department.name }}
+        </option>
+        {% endfor %}
+        </select>
+        <button type="submit" name="action" value="delete_department" formnovalidate>Delete Department</button>
+    </div>
+</form>
+<br>
+<h2>Manage Employees</h2>
+{% if selected_department_id %}
+    {% if employees | length == 0 %}
+        <p>No employees in this department!</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee_name</th>
+                    <th>Email</th>
+                    <th>Contact_no</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+                    <td>{{ employee.email }}</td>
+                    <td>{{ employee.contact_no }}</td>
+                    <td>{{ employee.role }}</td> 
+                    <td>
+                        <form method="POST" action="{{ url_for('delete_employee', admin_id=admin_id, employee_id=employee.emp_id) }}">
+                            <input type="hidden" name="selected_department_id" value="{{ selected_department_id }}">
+                            <button type="submit" name="action" value="delete_employee">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% else %}
+    <p>No Department Selected!</p>
+{% endif %}
+<br>
+<h2>Manage Reimbursement Requests</h2>
+{% if selected_department_id %}
+    {% if claims | length == 0 %}
+        <p>No Reimbursement Requests from this department!</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Amount</th>
+                    <th>Expense Type</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Proof</th>
+                    <th>Manager</th>
+                    <th>Manager Actions</th>
+                    <th>Request Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for claim, employee, manager in claims %}
+                <tr>
+                    <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+                    <td>{{ claim.amount }}</td>
+                    <td>{{ claim.expense_type }}</td> 
+                    <td>{{ claim.status }}</td>
+                    <td>{{ claim.created }}</td>
+                    <td>
+                        {% if claim.proof %}
+                            <a href="{{ url_for('static', filename='uploads/' ~ claim.proof) }}" target="_blank">View</a>
+                        {% else %}
+                            No Proof
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ manager.first_name }} {{manager.last_name}}
+                    </td>
+                    <td>
+                        <br>
+                        <form method="POST" action="{{ url_for('assign_manager', admin_id=admin_id, req_id=claim.req_id)}}">
+                            <input type="hidden" name="selected_department_id" value="{{ selected_department_id }}">
+                            <select id="manager" name="manager">
+                            <option value="">Select Manager</option>
+                            {% for employee in employees %}
+                                {% if employee.role == 'MANAGER' %}
+                                <option value="{{ employee.emp_id }}">{{ employee.first_name }} {{ employee.last_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                            </select>
+                            <button type="submit" name="action" value="assign_manager">Assign Manager</button>
+                        </form>
+                    </td>
+                    <td>
+                        
+                        <form method="POST" action="{{ url_for('approve_reject_claim', user_id=admin_id, req_id=claim.req_id)}}">
+                            <input type="hidden" name="selected_department_id" value="{{ selected_department_id }}">
+                            <button type="submit" name="action" value="approve_claim">Approve</button>
+                            <button type="submit" name="action" value="reject_claim">Reject</button>
+                            <br>
+                            <br>
+                            <input type="text" name="comments" placeholder="Comments">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% else %}
+    <p>No Department Selected!</p>
+{% endif %}
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selectedDepartmentId = {{ selected_department_id | tojson }};
+        var departmentSelect = document.getElementById('department');
+        if (selectedDepartmentId) {
+            Array.from(departmentSelect.options).forEach(function (option) {
+                if (option.value == selectedDepartmentId) {
+                    option.selected = true;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

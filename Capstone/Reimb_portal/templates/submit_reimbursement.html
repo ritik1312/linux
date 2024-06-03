@@ -1,0 +1,45 @@
+{% extends "dashboard_base.html" %}
+
+{% block head %}
+  <title>Reimbursement Form</title>
+{% endblock %}
+
+{% block h1 %}
+<h1>Reimbursement Claim Form</h1>
+{% endblock %}
+
+{% block body %}
+
+<main>
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('submit_reimbursement', user_id=user_id) }}">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.email.label }} {{ form.email(size=32) }}
+            {% for error in form.email.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.amount.label }} {{ form.amount() }}
+            {% for error in form.amount.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.expense_type.label }} {{ form.expense_type() }}
+            {% for error in form.expense_type.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.receipt.label }} {{ form.receipt() }}
+            {% for error in form.receipt.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</main>
+{% endblock %}

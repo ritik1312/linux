@@ -1,0 +1,53 @@
+{% extends "dashboard_base.html" %}
+
+{% block head %}
+<title>Employee Dashboard</title>
+{% endblock %}
+
+{% block h1 %}
+<h1>Employee Dashboard</h1>
+{% endblock %}
+
+{% block body %}
+
+<main>
+<h2>My Reimbursement Requests</h2>
+{% if claims | length == 0 %}
+    <p>No Reimbursement Requests submitted!</p>
+{% else %}
+    <table>
+        <thead>
+            <tr>
+                <th>Expense Type</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Proof</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for claim in claims %}
+            <tr>
+                <td>{{ claim.expense_type }}</td> 
+                <td>{{ claim.amount }}</td>
+                <td>{{ claim.status }}</td>
+                <td>{{ claim.created }}</td>
+                <td>
+                    {% if claim.proof %}
+                        <a href="{{ url_for('static', filename='uploads/' ~ claim.proof) }}" target="_blank">View Proof</a>
+                    {% else %}
+                        No Proof
+                    {% endif %}
+                </td>
+                <td>{{ claim.comments }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+<br>
+<a href="{{ url_for('submit_reimbursement', user_id=employee_id) }}" class="btn">Submit a Reimbursement Claim</a>
+</main>
+
+{% endblock %}

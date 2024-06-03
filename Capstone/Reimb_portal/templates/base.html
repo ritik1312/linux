@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="header">
+        <div class="company-logo">
+            <img src="{{ url_for('static', filename='images/company_logo.svg') }}" alt="Company Logo">
+        </div>
+    </div>
+    {% block h1 %}{% endblock %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+            {% for category, message in messages %}
+                <p class="flash-message {{ category }}">{{ message }}</p>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block body %}{% endblock %}
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const flashMessages = document.querySelector('.flash-messages');
+            if (flashMessages) {
+                setTimeout(() => {
+                    flashMessages.style.transition = 'opacity 1s ease';
+                    flashMessages.style.opacity = '0';
+                    setTimeout(() => {
+                        flashMessages.remove();
+                    }, 1000); // Additional 1 second to match the transition
+                }, 3000); // Display the message for 3 seconds
+            }
+        });
+    </script>
+</body>
+</html>
