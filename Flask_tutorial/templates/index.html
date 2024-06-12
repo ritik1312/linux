@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>TO-DO LIST</title>
+{% endblock %}
+
+{% block body %}
+<body>
+<div class="content">
+    <h1>Tasks To-Do</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Added</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{task.content}}</td>
+                <td>{{task.created.strftime("%Y-%m-%d")}}</td>
+                <td>
+                    <a href="/delete/{{task.id}}">Delete</a>
+                    <br>
+                    <a href="/edit/{{task.id}}">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form action="/" method="POST" id="task-form">
+        <label for="content">Task:</label>
+        <input type="text" name="content" id="content" required>
+        <button type="submit" id="btn_add">Add Task</button>
+    </form>
+</div>
+</body>
+{% endblock %}

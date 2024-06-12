@@ -1,0 +1,75 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .header {
+    /* display: flex; */
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+  
+  .header img {
+    width: 100px; /* Adjust logo width as needed */
+  }
+  
+  h1 {
+    text-align: center;
+    margin: 0;
+  }
+  
+  form {
+    width: 500px; /* Adjust form width as needed */
+    margin: auto;
+    padding: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin-bottom: 15px;
+  }
+  
+  input[type="radio"] {
+    margin-right: 5px;
+  }
+  
+  .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  p {
+    font-size: 0.8rem;
+    margin-bottom: 0;
+  }
+  
+  button {
+    background-color: #4CAF50; /* Green color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45A049; /* Green hover color */
+  }
+  
