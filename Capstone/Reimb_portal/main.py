@@ -48,7 +48,7 @@ def openDashBoard(user):
     else:
         return redirect(url_for('employee_dashboard', employee_id=user.emp_id))
 
-
+# LOGIN PAGE
 @app.route("/login", methods=["GET", "POST"])
 def login():
     login_form = LoginForm()
@@ -65,6 +65,7 @@ def login():
                 else:
                     flash('Invalid email or password!', 'error')
                     logger.warning(f'Invalid login attempt for email: {login_form.email.data}')
+                    return redirect(url_for('login'))
             except Exception as e:
                 logger.error(f'Error while logging in: {e}')
                 return f'Error while logging in: {e}'
@@ -86,6 +87,7 @@ def logout():
     return redirect(url_for('login'))
 
 
+# REGISTER PAGE
 @app.route("/register", methods=["GET", "POST"])
 def register():
     register_form = RegisterForm()
@@ -98,7 +100,7 @@ def register():
         if register_form.validate_on_submit():
             user = Employee.query.filter_by(email=register_form.email.data).all()
             if user:
-                flash(f'Email id already exits', 'error')
+                flash(f'Email id already exits!', 'error')
                 logger.warning(f'Attempt to register with existing email: {register_form.email.data}')
                 return redirect(url_for('register'))
 
@@ -126,8 +128,13 @@ def register():
     logger.info(f'Register page rendered')
     return render_template('register.html', form=register_form)
 
+def set_response_header(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
-# Admin dashboard
+# ADMIN DASHBOARD
 @app.route("/admin_dashboard/<int:admin_id>", methods=["GET", "POST"])
 @login_required
 def admin_dashboard(admin_id:int):
@@ -156,7 +163,6 @@ def admin_dashboard(admin_id:int):
                 flash(f'Error while deleting department: {e}','error')
                 logger.error(f'Error while deleting department ID {selected_department_id}: {e}')
             return redirect(url_for('admin_dashboard', admin_id=admin_id))
-            return redirect(url_for('admin_dashboard', admin_id=admin_id))
         elif action == "add_department":
             new_department_name = request.form.get("new_department_name")
             if new_department_name:
@@ -172,7 +178,11 @@ def admin_dashboard(admin_id:int):
             return redirect(url_for('admin_dashboard', admin_id=admin_id))
         else:
             if selected_department_id:
-                department_claims = db.session.query(Request, Employee).join(Employee, Employee.emp_id == Request.emp_id).filter(Employee.department_id == selected_department_id).all()
+                department_claims = (
+                    db.session.query(Request, Employee)
+                    .join(Employee, Employee.emp_id == Request.emp_id)
+                    .filter(Employee.department_id == selected_department_id)
+                    .all())
                 department_employees = Employee.query.filter_by(department_id=selected_department_id).all()
     
     claims_with_managers = []
@@ -183,10 +193,8 @@ def admin_dashboard(admin_id:int):
     response = make_response(render_template('admin_dashboard.html', admin_id=admin_id, user=admin, departments=departments,
                            employees=department_employees, claims=claims_with_managers,
                            selected_department_id=selected_department_id))
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "0"
-
+    
+    response = set_response_header(response)
     logger.info(f'Admin dashboard rendered for Admin ID {admin_id}')
     return response
 
@@ -209,6 +217,16 @@ def delete_employee(admin_id: int, employee_id: int):
         flash('Employee not found.', 'error')
         logger.warning(f'Attempt to delete non-existing employee ID: {employee_id}')
     return redirect(url_for('admin_dashboard', admin_id=admin_id, selected_department_id=selected_department_id))
+
+
+# @app.route("/admin_dashboard/<int:admin_id>/distribute_managers/<int:dept_id>", methods=["POST"])
+# @login_required
+# def distribute_managers(admin_id: int, dept_id: int):
+#     pending_department_claims = Request.query.filter_by(status='PENDING').all()
+#     department_managers = Employee.query.filter_by(department_id=dept_id).filter_by(role='MANAGER').all()
+#     claims_count = len(pending_department_claims)
+#     managers_count = len(department_managers)
+#     claims_per_manager = claims_count//managers_count
 
 
 @app.route("/admin_dashboard/<int:admin_id>/assign_manager/<int:req_id>", methods=["POST"])
@@ -239,26 +257,29 @@ def approve_reject_claim(user_id: int, req_id: int):
     action = request.form.get("action")
     if claim:
         if current_user.role == 'ADMIN' or current_user.emp_id == claim.manager_id:
+            comments = request.form["comments"]
             if action == "approve_claim":
                 try:
                     claim.status = "APPROVED"
-                    claim.comments = request.form["comments"]
+                    claim.comments = comments
                     db.session.commit()
                     flash(f'Request ID: {req_id} Approved!', 'success')
                     logger.info(f'Request ID {req_id} approved by Admin ID {user_id}')
                 except Exception as e:
                     flash(f'Error while approving claim: {e}', 'error')
-                    logger.error(f'Error while approving request ID {req_id} by Admin ID {user_id}: {e}')
+                    logger.error(f'Error while approving request ID {req_id} by Manager ID {user_id}: {e}')
             else:
-                try:
-                    claim.status = "REJECTED"
-                    claim.comments = request.form["comments"]
-                    db.session.commit()
-                    flash(f'Request ID: {req_id} Rejected!', 'error')
-                    logger.info(f'Request ID {req_id} rejected by Admin ID {user_id}')
-                except Exception as e:
-                    flash(f'Error while rejecting claim: {e}', 'error')
-                    logger.error(f'Error while rejecting request ID {req_id} by Admin ID {user_id}: {e}')
+                if comments:
+                    try:
+                        claim.status = "REJECTED"
+                        claim.comments = request.form["comments"]
+                        db.session.commit()
+                        flash(f'Request ID: {req_id} Rejected!', 'error')
+                        logger.info(f'Request ID {req_id} rejected by Admin ID {user_id}')
+                    except Exception as e:
+                        flash(f'Error while rejecting claim: {e}', 'error')
+                        logger.error(f'Error while rejecting request ID {req_id} by Manager ID {user_id}: {e}')
+                flash('Provide comments for rejection','error')
         else:
             flash('You do not have permission to perform this action.', 'error')
     else:
@@ -269,11 +290,10 @@ def approve_reject_claim(user_id: int, req_id: int):
     elif current_user.role == 'MANAGER':
         return redirect(url_for('manager_dashboard', manager_id=user_id))
 
-
-@app.route('/manager_dashboard/<int:manager_id>', methods=["GET", "POST"])
+# MANAGER DASHBOARD
+@app.route('/manager_dashboard/<int:manager_id>')
 @login_required
 def manager_dashboard(manager_id):
-    # manager dashboard
     manager = Employee.query.get(manager_id)
     if manager.role != "MANAGER":
         flash('Not Authorised!','error')
@@ -281,7 +301,12 @@ def manager_dashboard(manager_id):
         return redirect(url_for('login'))
     try:
         manager_requests = Request.query.filter_by(emp_id=manager_id).all()
-        employee_requests = db.session.query(Request, Employee).join(Employee, Employee.emp_id == Request.emp_id).filter(Request.manager_id == manager_id).all()
+        employee_requests = (
+            db.session.query(Request, Employee)
+            .join(Employee, Employee.emp_id == Request.emp_id)
+            .filter(Request.manager_id == manager_id)
+            .all()
+            )
         logger.info(f'Fetched claims for manager ID {manager_id}')
     except Exception as e:
         logger.error(f'Error while fetching claims for manager ID {manager_id}: {e}')
@@ -293,26 +318,22 @@ def manager_dashboard(manager_id):
     
     response = make_response(render_template('manager_dashboard.html', manager_id=manager_id, user=manager, my_claims = manager_requests, claims=claims_with_employee_details))
 
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "0"
+    response = set_response_header(response)
 
     logger.info(f'Manager dashboard rendered for manager ID {manager_id}')        
     return response
 
 
-# Employee dashboard
+# EMPLOYEE DASHBOARD
 @app.route('/employee_dashboard/<int:employee_id>')
 @login_required
 def employee_dashboard(employee_id):
     employee = Employee.query.get(employee_id)
     employee_requests = Request.query.filter_by(emp_id=employee_id).all()
 
-    response = make_response(render_template('employee_dashboard.html', employee_id=employee_id, user=employee, claims=employee_requests))
+    response = make_response(render_template('employee_dashboard.html', employee_id=employee_id, user=employee, my_claims=employee_requests))
     
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "0"
+    response = set_response_header(response)
 
     logger.info(f'Employee dashboard rendered for employee ID {employee_id}')        
     return response
@@ -327,7 +348,7 @@ def max_claim_amount(expense_type) -> int:
         return 5000
 
 
-# Reimbursement Submission Form
+# REIMBURSEMENT SUBMISSION PAGE
 @app.route("/dashboard/<int:user_id>/submitreimbursement", methods=["GET", "POST"])
 @login_required
 def submit_reimbursement(user_id):
@@ -375,12 +396,11 @@ def submit_reimbursement(user_id):
 
                     # Generating unique filename with req_id and employee_id
                     filename = secure_filename(receipt.filename)
-                    unique_filename = f'proof_{user_id}_{req_id}_{filename}'
+                    unique_filename = f'{user_id}_{req_id}_{filename}'
 
                     # Saving the receipt with new filename
                     receipt.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
                     
-                    # Updating the request with new filename
                     new_request.proof = unique_filename
 
                     db.session.commit()
@@ -435,7 +455,6 @@ def submit_reimbursement(user_id):
 if __name__ == "__main__":
     with app.app_context():
         # db.drop_all()
-        db.create_all()
         initialize_database(app)
         logger.info('Reimbursement Database initialized')
     app.run()
