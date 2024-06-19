@@ -1,0 +1,307 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  max-height: 80vh;
+  overflow-y: auto;
+  color: #fff;
+}
+
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("/static/images/wallpaper3.jpg") no-repeat center center; 
+  background-size: cover;
+  filter: blur(8px);
+  z-index: -1;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px;
+  background-color: rgb(7, 4, 17);
+  position: relative;
+}
+
+.company-logo {
+  display: flex;
+  align-items: center;
+}
+
+.company-logo img {
+  width: 120px; 
+  height: 40px;
+}
+
+.logout-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.logout-container img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px; 
+}
+
+.logout-container p {
+  margin: 0 10px 0 0;
+  font-size: 14px;
+}
+
+.logout-container a {
+  text-decoration: none;
+  font-size: 12px;
+  background-color: #db1e2d;
+  color: #fff;
+}
+
+.logout-container a:hover {
+  text-decoration: underline;
+  background-color: #dc3d15;
+}
+
+main {
+  width: 90%;
+  margin: 2rem auto;
+  padding: 1rem;
+  position: relative;
+  /* background: #f4f4f9; */
+  box-shadow: 0 2px 4px rgba(255, 255, 266, 0.75);
+  border-radius: 4px;
+}
+
+.form-container {
+  width: 80%;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  /* background: #fff; */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.75);
+  border-radius: 8px;
+}
+
+.btn button[type="submit"] {
+  width: calc(100% - 0.5rem);
+  /* background-color: #007bff; */
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: linear-gradient(90deg, #007bff, #dc08ec);
+}
+
+.btn button:hover[type="submit"] {
+  background: linear-gradient(90deg, #0066cc, #810283);
+}
+
+a {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  color: #fff
+}
+
+a:hover {
+  background-color: #0056b3;
+}
+
+h1 {
+  text-align: center;
+  color: #fff
+}
+
+
+/* flash messages style */
+
+.flash-messages {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: auto;
+  max-width: 300px;
+  z-index: 1000;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.flash-message {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.flash-message.success {
+  color: green;
+  border-left: 4px solid green;
+}
+
+.flash-message.error {
+  color: red;
+  border-left: 4px solid red;
+}
+
+/* Form Styles */
+form {
+  margin-bottom: 2rem;
+}
+
+form div {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+input[type="text"], select {
+  width: calc(100% - 0.5rem);
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* .list-container input[type="text"], select {
+  width: 200px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+} */
+
+button[type="submit"] {
+  width: 200px;
+  margin-top: 1rem;
+  background-color: #1e90ff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #1c7ed6;
+}
+
+button[type="submit"][formnovalidate], button[value="delete_employee"], button[value="reject_claim"] {
+  background-color: #ff4757;
+}
+
+button[type="submit"][formnovalidate]:hover, button[value="delete_employee"]:hover , button[value="reject_claim"]:hover{
+  background-color: #dc3d15;
+}
+
+button[value="delete_employee"], button[value="reject_claim"] {
+  background-color: #ff4757;
+  width: 200px;
+}
+
+button[value="delete_employee"]:hover , button[value="reject_claim"]:hover{
+  background-color: #dc3d15;
+}
+
+button[value="approve_claim"]{
+  background-color: rgb(24, 162, 24);
+  width: 200px;
+}
+
+button[value="approve_claim"]:hover{
+  background-color: rgb(18, 105, 18);
+}
+
+/* List Container */
+
+.list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.list-card {
+  width: 90%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 300px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: black;
+}
+
+.list-image {
+  height: 150px;
+}
+
+.list-details {
+  padding: 1rem;
+}
+
+.list-details h3 {
+  margin: 0.5rem 0;
+}
+
+.list-details p {
+  margin: 0.5rem 0;
+}
+
+.assign-manager {
+  margin-top: 2rem;
+  border-width: 5px;
+  border:#db1e2d;
+  justify-content: left;
+}
+
+/* .list-details button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+} */
+
+/* .list-details button:hover {
+  background-color: #d32f2f;
+} */
+
