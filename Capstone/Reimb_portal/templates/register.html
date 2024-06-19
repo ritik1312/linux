@@ -10,9 +10,6 @@
 
 {% block body %}
     <div class="container">
-        {% if error %}
-            <p><strong>{{error}}</strong></p>
-        {% endif %}
         <form id="registerForm" method="POST" action="{{ url_for('register') }}">
             {{ form.hidden_tag() }}
             <div class="form-group">
