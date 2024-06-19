@@ -1,14 +1,22 @@
 from flask import flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, URLField, FloatField, FileField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, URLField, FloatField, FileField, ValidationError
 from wtforms.validators import DataRequired, Email, Length, EqualTo, NumberRange
 from flask_wtf.file import FileAllowed
+import re
 import email_validator
 
-def company_email(form, field):
+def valid_company_domain(form, field):
     allowed_domain = "nucleusteq.com"
-    if not field.data.endswith(f"@{allowed_domain}"):
-        flash('Please enter Company Email!')
+    email = field.data
+    if not email.endswith(f"@{allowed_domain}"):
+        raise ValidationError('Please use Company Email!')
+
+def check_password_requirement(form, field):
+    password = field.data
+    if not re.search(r'[A-Z]', password) or not re.search(r'[0-9]', password):
+        raise ValidationError('Password must contain atleast 1 digit and 1 uppercase!')
+    
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -20,10 +28,10 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email(), company_email])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=3)])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    contact_no = StringField('Contact Number', validators=[DataRequired(), Length(min=10, max=15)])
+    email = StringField('Email', validators=[DataRequired(), Email(), valid_company_domain])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8, message='Password must be atleast 8 characters long!'), check_password_requirement])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message='Passwords don\'t match!')])
+    contact_no = StringField('Contact Number', validators=[DataRequired(), Length(min=10, max=10, message='Enter a valid 10-digit contact number!')])
     department = SelectField('Department', choices=[('','Select Department')], default='')
     role = SelectField('Select Role', choices=[(1,'User'),(2,'Manager')], default=1)
     submit = SubmitField('Register')
