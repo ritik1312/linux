@@ -12,40 +12,39 @@
 
 <main>
 <h2>My Reimbursement Requests</h2>
-{% if claims | length == 0 %}
+<div class="list-container">
+{% if my_claims | length == 0 %}
     <p>No Reimbursement Requests submitted!</p>
 {% else %}
-    <table>
-        <thead>
-            <tr>
-                <th>Expense Type</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th>Proof</th>
-                <th>Comments</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for claim in claims %}
-            <tr>
-                <td>{{ claim.expense_type }}</td> 
-                <td>{{ claim.amount }}</td>
-                <td>{{ claim.status }}</td>
-                <td>{{ claim.created }}</td>
-                <td>
+    {% for claim in my_claims %}
+        <div class="list-card">
+            <img src="{{ url_for('static', filename='images/claim_icon.webp')}}" class="list-image">
+            <div class="list-details">
+                <p>{{ claim.amount }} | {{ claim.expense_type }}</p>
+                <p>{{ claim.created }}</p>
+                <p>Proof:
                     {% if claim.proof %}
-                        <a href="{{ url_for('static', filename='uploads/' ~ claim.proof) }}" target="_blank">View Proof</a>
+                        <a href="{{ url_for('static', filename='uploads/' ~ claim.proof) }}" target="_blank" class="btn">View</a>
                     {% else %}
                         No Proof
                     {% endif %}
-                </td>
-                <td>{{ claim.comments }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </p>
+                {% if claim.status == "APPROVED" %}
+                    <p style="color: green;">{{ claim.status }}</p>
+                {% elif claim.status == "REJECTED" %}
+                    <p style="color: red;">{{ claim.status }}</p>
+                {% else %}
+                    <p>{{ claim.status }}</p>
+                {% endif %}
+                {% if claim.comments %}
+                    <p>{{claim.comments}}</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
 {% endif %}
+</div>
+<br>
 <br>
 <a href="{{ url_for('submit_reimbursement', user_id=employee_id) }}" class="btn">Submit a Reimbursement Claim</a>
 </main>
